@@ -20,7 +20,8 @@ class RNInputMasking extends React.Component {
 
                 onChangeText={this.props.onChangeText}
 
-                /*********************
+                /******************
+                 * 
                  * 
                  * Catch the result from this function as,
                  * 
