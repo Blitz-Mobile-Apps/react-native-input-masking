@@ -40,7 +40,8 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
     private String[] errorMessages = new String[]{
             "Only digits are allowed at this position",
-            "Only alphabets are allowed at this position"
+            "Only alphabets are allowed at this position",
+            "Please enter mask format"
     };
 
     public MaskedInput(Context context) {
@@ -236,6 +237,11 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
         Boolean flag = true ;
 
         int start = 0;
+
+        if(maskFormat.length() <= 0){
+            releaseErrorForMasking( errorMessages[2] );
+            return false;
+        }
 
         if( maskType.equals("phone-number") ){
 

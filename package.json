@@ -1,7 +1,7 @@
 {
   "name": "react-native-input-masking",
   "title": "React Native Input Masking",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TODO",
   "main": "index.js",
   "scripts": {
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github_account/react-native-input-masking.git",
-    "baseUrl": "https://github.com/github_account/react-native-input-masking"
+    "url": "git+https://github.com/Blitz-Mobile-Apps/react-native-input-masking.git",
+    "baseUrl": "https://github.com/Blitz-Mobile-Apps/react-native-input-masking.git"
   },
   "keywords": [
     "react-native"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "yourname@email.com"
+    "name": "Benjamin Logan",
+    "email": "benjaminlogan420@email.com"
   },
   "license": "MIT",
   "licenseFilename": "LICENSE",

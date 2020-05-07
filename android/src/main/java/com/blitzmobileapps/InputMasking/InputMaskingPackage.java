@@ -18,7 +18,7 @@ public class InputMaskingPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
         return Collections.emptyList();
     }
-    
+
 
     @NonNull
     @Override
