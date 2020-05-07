@@ -116,6 +116,9 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
                     releaseSubmitEvent();
 
+                    textChange(editText.getText().toString());
+
+
                     InputMethodManager inputMethodManager = (InputMethodManager) editText.getContext().getSystemService(
                             Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(editText.getApplicationWindowToken(), 0);

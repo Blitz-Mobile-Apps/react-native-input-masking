@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 let InputMasking = requireNativeComponent(`InputMasking`);
 
+
 class RNInputMasking extends React.Component {
     constructor(props) {
         super(props);
@@ -13,10 +14,12 @@ class RNInputMasking extends React.Component {
 
     render() {
 
-        return <View style={[styles.fieldContainer, this.props.style]} >
+       
 
-            <InputMasking
-                style={styles.field}
+      return   <View style={[styles.fieldContainer, this.props.style]} >
+
+        <InputMasking
+                 style={styles.field}
 
                 onChangeText={this.props.onChangeText}
 
@@ -28,12 +31,11 @@ class RNInputMasking extends React.Component {
                  * console.log(' onChangeText ', event.nativeEvent.text )
                  * 
                  *********************/
-
-                // onFocus={this.props.onFocus}
-                { ...( Platform.OS == "android" ? 
-                {onFocus:this.props.onFocus} 
-              : {onFocusText:this.props.onFocus}  ) 
-          }
+ 
+                {...(Platform.OS == "android" ?
+                    { onFocus: this.props.onFocus }
+                    : { onFocusText: this.props.onFocus })
+                }
 
                 /*********************
                  * 
@@ -56,10 +58,10 @@ class RNInputMasking extends React.Component {
                  * 
                  *********************/
 
-                // onSubmitEditing={ this.props.onSubmitEditing}
-                { ...( Platform.OS == "android" ? 
-                      {onSubmitEditing: this.props.onSubmitEditing} 
-                    : {onSubmitText: this.props.onSubmitEditing} ) 
+ 
+                {...(Platform.OS == "android" ?
+                    { onSubmitEditing: this.props.onSubmitEditing }
+                    : { onSubmitText: this.props.onSubmitEditing })
                 }
 
                 /*********************
@@ -82,7 +84,11 @@ class RNInputMasking extends React.Component {
                  * 
                  *********************/
 
-                placeholder={this.props.placeholder}
+ 
+                {...(Platform.OS == "android" ?
+                { placeholder: this.props.placeholder }
+                : { _placeholder: this.props.placeholder })
+            }
 
                 /*********************
                  * 
@@ -102,7 +108,11 @@ class RNInputMasking extends React.Component {
                 * 
                 *********************/
 
-                textColor={this.props.textColor}
+ 
+                {...(Platform.OS == "android" ?
+                { textColor: this.props.textColor }
+                : { _textColor: this.props.textColor })
+            }
 
                 /*********************
                 * 
@@ -113,15 +123,15 @@ class RNInputMasking extends React.Component {
                 *********************/
 
 
-               textSize={this.props.textSize}
+                textSize={this.props.textSize}
 
-               /*********************
-               * 
-               * Use this prop to set the text size for the text input:
-               * 
-               * default is android's default, pass any hex colornumber
-               * 
-               *********************/
+                /*********************
+                * 
+                * Use this prop to set the text size for the text input:
+                * 
+                * default is android's default, pass any hex colornumber
+                * 
+                *********************/
 
                 disabled={this.props.disabled}
 
@@ -152,8 +162,11 @@ class RNInputMasking extends React.Component {
                  * default is Left, can be either of Left or Right
                  * 
                  *********************/
-
-                keyboardType={this.props.keyboardType}
+ 
+                {...(Platform.OS == "android" ?
+                { keyboardType: this.props.keyboardType }
+                : { _keyboardType: this.props.keyboardType })
+            }
 
                 /*********************
                  * 
@@ -168,8 +181,12 @@ class RNInputMasking extends React.Component {
                  * The password property for the keyboard will conceal the input with default dots
                  * 
                  *********************/
+ 
 
-                returnKeyType={this.props.returnKeyType}
+                {...(Platform.OS == "android" ?
+                { returnKeyType: this.props.returnKeyType }
+                : { _returnKeyType: this.props.returnKeyType })
+            }
 
                 /*********************
                  * 
@@ -231,7 +248,7 @@ class RNInputMasking extends React.Component {
 
 
             />
-        </View>
+         </View>
     }
 
 
@@ -240,11 +257,13 @@ class RNInputMasking extends React.Component {
 const styles = StyleSheet.create({
     field: {
         height: '100%',
-        width: '100%',
+        width: '100%',  
+        backgroundColor: 'rgba(0,0,0,0.1)'
     },
     fieldContainer: {
         height: 100,
-        width: 100
+        width: 100,
+        backgroundColor: 'red'
     }
 })
 

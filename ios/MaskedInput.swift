@@ -5,7 +5,6 @@
 //  Created by Macbook on 07/05/2020.
 //  Copyright © 2020 Facebook. All rights reserved.
 //
-
 import UIKit
 import AVFoundation
 
@@ -36,7 +35,7 @@ import AVFoundation
      }
   }
 
-class MaskedInput : UIView,  UITextFieldDelegate  {
+class MaskedInput : UITextField,  UITextFieldDelegate  {
   
   
   
@@ -52,11 +51,11 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
   private var isMasking : Bool = false
   @objc var value: String = ""
   @objc var textSize: CGFloat = 15
-  @objc var textColor: String = "#fffff"
-  @objc var placeholder: String = "Type something"
+  @objc var _textColor: String = "#fffff"
+  @objc var _placeholder: String = "Type something"
   @objc var textAlign: String = "left"
-  @objc var keyboardType: String = "default"
-  @objc var returnKeyType: String = "done"
+  @objc var _keyboardType: String = "default"
+  @objc var _returnKeyType: String = "done"
   @objc var placeholderTextColor: String = "#fffff"
   @objc var onChangeText:RCTDirectEventBlock?
   @objc var onFocusText:RCTDirectEventBlock?
@@ -65,7 +64,7 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
 
   
 
-  private var textField : UITextField = UITextField.init(frame: CGRect(x: 0, y: 350, width:350, height: 50))
+  private var textField : UITextField = UITextField.init(frame: CGRect(x: 0, y: 0, width:0, height: 0))
   
 //  private var initialIndex : String.Index = "teeam".firstIndex(of: "a")!;
   private var initialIndexOfSeperator : Int = 3;
@@ -87,9 +86,9 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
         {
           print("Type of masking: Phone number masking")
           self.maskIdentifier = "-"
-          if(textField.text?.count == 1){
+          if(self.text?.count == 1){
             preText="+"
-            self.textField.text! = preText
+            self.text! = preText
           }
           
           return
@@ -129,13 +128,13 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
   
   func textFieldDidEndEditing(_ textField: UITextField) {
     prepareMask()
-    onSubmitText!(["text":self.textField.text!])
+    onSubmitText!(["text":self.text!])
     print("Editing ended")
   }
   
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
+    self.resignFirstResponder()
     return true
   }
   
@@ -150,9 +149,9 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
   
   
   private func intializeEditingEvents(){
-    self.textField.addTarget(self, action: #selector(toggleEditing), for: UIControl.Event.editingDidBegin)
-    self.textField.addTarget(self, action: #selector(onTouchInside), for: .touchUpInside)
-    self.textField.addTarget(self, action: #selector(onTouchOutside), for: .touchUpOutside)
+    self.addTarget(self, action: #selector(toggleEditing), for: UIControl.Event.editingDidBegin)
+    self.addTarget(self, action: #selector(onTouchInside), for: .touchUpInside)
+    self.addTarget(self, action: #selector(onTouchOutside), for: .touchUpOutside)
   }
   
   @objc func onTouchInside(textField: UITextField) {
@@ -170,24 +169,23 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
   private func initilaizeView(){
     self.frame = self.bounds
 //    intializeEditingEvents()
-    self.textField.text = value
+    self.text = value
     // for testing purposes adding background color
-    self.textField.adjustsFontSizeToFitWidth = true;
-    self.textField.font = UIFont.systemFont(ofSize: textSize)
+    self.adjustsFontSizeToFitWidth = true;
+    self.font = UIFont.systemFont(ofSize: textSize)
     self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    self.textField.placeholder = "Enter text here"
+//    self.placeholder = "Enter text here"
     self.becomeFirstResponder()
-    self.textField.borderStyle = UITextField.BorderStyle.roundedRect
-    self.textField.autocorrectionType = UITextAutocorrectionType.no
-    self.textField.keyboardType = UIKeyboardType.default
-    self.textField.returnKeyType = UIReturnKeyType.done
-    self.textField.clearButtonMode = UITextField.ViewMode.whileEditing
-    self.textField.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
+    self.borderStyle = UITextField.BorderStyle.roundedRect
+    self.autocorrectionType = UITextAutocorrectionType.no
+    self.keyboardType = UIKeyboardType.default
+    self.returnKeyType = UIReturnKeyType.done
+    self.clearButtonMode = UITextField.ViewMode.whileEditing
+    self.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didRecognizeTapGesture(_:)))
     self.addGestureRecognizer(tapGesture)
-    self.textField.addTarget(self, action:  #selector(toggleEditing), for: .editingChanged)
+    self.addTarget(self, action:  #selector(toggleEditing), for: .editingChanged)
     textField.delegate = self
-    self.addSubview(textField)
     self.sizeToFit()
     self.translatesAutoresizingMaskIntoConstraints = true
   
@@ -225,9 +223,9 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
 
   
         var newStr = ""
-        let test = self.textField.text;
+        let test = self.text;
     for (index,each) in test!.enumerated() {
-          if(textField.text!.count >= 1){
+          if(self.text!.count >= 1){
            
             let test_char = maskFormat[maskFormat.index(maskFormat.startIndex, offsetBy: index)]
             print("Last item is : ",each , test_char , test!.count, index)
@@ -236,22 +234,21 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
             if(!test_char.isLetter && !test_char.isNumber && validateCharacter(_char: test_char)){
           let charIdentifier = test_char
           newStr += String(charIdentifier)
-          self.textField.text = newStr
+          self.text = newStr
           }
             
             
           if(test_char == "A" && each.isLetter){
             newStr += String(each)
-            self.textField.text = newStr
+            self.text = newStr
           } else if(test_char == "A" && !each.isLetter){
             onErrorForMasking!(["error":alphaErrorText])
-//            onChangeText!(["text":self.textField.text!])
 
             }
             
           if(test_char == "D" && each.isNumber){
             newStr += String(each)
-            self.textField.text = newStr
+            self.text = newStr
           }else if(test_char == "D" && !each.isNumber){
             onErrorForMasking!(["error":numericErrorText])
           }
@@ -270,15 +267,15 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
    
   
   @objc private func toggleEditing(){
-    if(textField.text!.count > maskFormat.count){
-      textField.deleteBackward()
+    if(self.text!.count > maskFormat.count){
+      self.deleteBackward()
     }
     else{
     print("Toggled editing from js to native")
     identifySeperator()
     prepareMask()
     }
-    onChangeText!(["text":self.textField.text!])
+    onChangeText!(["text":self.text!])
     
 
   }
@@ -294,7 +291,7 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
 
     print("Tap gesture detected on self")
     
-    self.textField.addTarget(self, action:  #selector(toggleEditing), for: .allEditingEvents)
+    self.addTarget(self, action:  #selector(toggleEditing), for: .allEditingEvents)
       //doSomething()
   }
   
@@ -355,7 +352,7 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
   
   private func setKeyboardType() -> UIKeyboardType {
     
-    switch keyboardType {
+    switch _keyboardType {
     case "email-address":
       return UIKeyboardType.emailAddress
     case "number-pad":
@@ -377,7 +374,7 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
   
   private func setReturnKeyType() -> UIReturnKeyType {
     
-    switch returnKeyType {
+    switch _returnKeyType {
     case "go":
       return  UIReturnKeyType.go
     case "next":
@@ -409,30 +406,30 @@ class MaskedInput : UIView,  UITextFieldDelegate  {
       if(prop != "onChangeText"){
         switch prop {
         case "textSize":
-           self.textField.font = UIFont.systemFont(ofSize: textSize)
+           self.font = UIFont.systemFont(ofSize: textSize)
           print("One prop at a time", prop)
-        case "placeholder":
-           self.textField.placeholder = placeholder
+        case "_placeholder":
+           self.placeholder = _placeholder
           print("One prop at a time", prop)
          print("One prop at a time", prop)
         case "disabled":
-          self.textField.isEnabled = disabled;
+          self.isEnabled = disabled;
           print("One prop at a time", prop)
         case "value":
-          self.textField.text = value
+          self.text = value
           print("One prop at a time", prop)
-        case "keyboardType":
-          self.textField.keyboardType = setKeyboardType()
+        case "_keyboardType":
+          self.keyboardType = setKeyboardType()
           print("One prop at a time", prop)
         case "textAlign":
-          self.textField.textAlignment = setTextAlignment()
+          self.textAlignment = setTextAlignment()
           print("One prop at a time", prop)
-        case "returnKeyType":
-          self.textField.returnKeyType = setReturnKeyType()
+        case "_returnKeyType":
+          self.returnKeyType = setReturnKeyType()
           print("One prop at a time", prop)
-        case "textColor":
-          let color = UIColor().HexToColor(hexString: textColor, alpha: 1.0)
-          self.textField.textColor = color
+        case "_textColor":
+          let color = UIColor().HexToColor(hexString: _textColor, alpha: 1.0)
+          self.textColor = color
           print("One prop at a time", prop)
 
         default:
