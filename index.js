@@ -258,7 +258,9 @@ RNInputMasking.propTypes = {
 
     maskType: PropTypes.string,
 
-    maskFormat: PropTypes.string.isRequired
+    maskFormat: PropTypes.string.isRequired,
+
+    style: PropTypes.object
 }
 
 export default RNInputMasking;
