@@ -76,6 +76,12 @@ public class InputMaskingModule extends SimpleViewManager <MaskedInput> {
         maskedInput.setTextColor(Color.parseColor(TextColor));
     }
 
+    @ReactProp(name = "textSize")
+    public void setTextSize(MaskedInput maskedInput, @Nullable float textSize) {
+        maskedInput.setFontSize(textSize);
+    }
+
+
     @ReactProp(name = "disabled")
     public void setEnabled(MaskedInput maskedInput, @Nullable Boolean disable) {
         maskedInput.disabled(disable);

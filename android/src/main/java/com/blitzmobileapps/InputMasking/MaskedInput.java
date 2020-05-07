@@ -470,7 +470,16 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
     //    ******************* Methods visible to other classes ********************
 
+    public void setFontSize( float size ){
+        try{
+            this.setTextSize(size);
 
+        }
+        catch (Exception e){
+            Log.d("setTextSize", "setTextSize: "+e);
+        }
+
+    }
 
     public void setBottomColor( int color ){
         try{

@@ -102,6 +102,17 @@ class RNInputMasking extends React.Component {
                 * 
                 *********************/
 
+
+               textSize={this.props.textSize}
+
+               /*********************
+               * 
+               * Use this prop to set the text size for the text input:
+               * 
+               * default is android's default, pass any hex colornumber
+               * 
+               *********************/
+
                 disabled={this.props.disabled}
 
                 /*********************
@@ -245,6 +256,8 @@ RNInputMasking.propTypes = {
     placeholderTextColor: PropTypes.string,
 
     textColor: PropTypes.string,
+
+    textSize: PropTypes.number,
 
     disabled: PropTypes.bool,
 
