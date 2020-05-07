@@ -1,6 +1,6 @@
 import React from 'react'
 import { requireNativeComponent, StyleSheet } from 'react-native';
-
+import PropTypes from 'prop-types';
  
 let InputMasking = requireNativeComponent(`InputMasking`);
 
@@ -218,5 +218,39 @@ const styles = StyleSheet.create({
         width: '100%',
     },
 })
+
+
+RNInputMasking.propTypes = {
+
+    onChangeText: PropTypes.func,
+
+    onFocus: PropTypes.func,
+
+    onErrorForMasking: PropTypes.func,
+
+    onSubmitEditing: PropTypes.func,
+
+    underlineColorAndroid: PropTypes.string,
+
+    placeholder: PropTypes.string,
+
+    placeholderTextColor: PropTypes.string,
+
+    textColor: PropTypes.string,
+
+    disabled: PropTypes.bool,
+
+    value: PropTypes.string,
+
+    textAlign: PropTypes.string,
+
+    keyboardType: PropTypes.string,
+
+    returnKeyType: PropTypes.string,
+
+    maskType: PropTypes.string,
+
+    maskFormat: PropTypes.string.isRequired
+}
 
 export default RNInputMasking;
