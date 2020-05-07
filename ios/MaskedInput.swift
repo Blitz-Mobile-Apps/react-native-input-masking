@@ -175,7 +175,7 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
     self.font = UIFont.systemFont(ofSize: textSize)
     self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 //    self.placeholder = "Enter text here"
-    self.becomeFirstResponder()
+    // self.becomeFirstResponder()
     self.borderStyle = UITextField.BorderStyle.roundedRect
     self.autocorrectionType = UITextAutocorrectionType.no
     self.keyboardType = UIKeyboardType.default
