@@ -1,7 +1,7 @@
 import React from 'react'
-import { requireNativeComponent, StyleSheet } from 'react-native';
+import { requireNativeComponent, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
- 
+
 let InputMasking = requireNativeComponent(`InputMasking`);
 
 class RNInputMasking extends React.Component {
@@ -12,8 +12,11 @@ class RNInputMasking extends React.Component {
 
 
     render() {
-        
-        return <InputMasking style={styles.bottom}
+
+        return <View style={[styles.fieldContainer, this.props.style]} >
+
+            <InputMasking
+                style={styles.field}
 
                 onChangeText={this.props.onChangeText}
 
@@ -81,43 +84,43 @@ class RNInputMasking extends React.Component {
 
                 placeholderTextColor={this.props.placeholderTextColor}
 
-                 /*********************
-                 * 
-                 * Use this prop to set the placeholder text color for the text input:
-                 * 
-                 * default is #cccccc, pass any hex color
-                 * 
-                 *********************/
+                /*********************
+                * 
+                * Use this prop to set the placeholder text color for the text input:
+                * 
+                * default is #cccccc, pass any hex color
+                * 
+                *********************/
 
                 textColor={this.props.textColor}
 
-                 /*********************
-                 * 
-                 * Use this prop to set the text color for the text input:
-                 * 
-                 * default is android's default, pass any hex color
-                 * 
-                 *********************/
+                /*********************
+                * 
+                * Use this prop to set the text color for the text input:
+                * 
+                * default is android's default, pass any hex color
+                * 
+                *********************/
 
                 disabled={this.props.disabled}
 
-                 /*********************
-                 * 
-                 * Use this prop to disable the editing for the text input:
-                 * 
-                 * default is false, pass a boolean to toggle
-                 * 
-                 *********************/
+                /*********************
+                * 
+                * Use this prop to disable the editing for the text input:
+                * 
+                * default is false, pass a boolean to toggle
+                * 
+                *********************/
 
                 value={this.props.value}
 
-                 /*********************
-                 * 
-                 * Use this prop to set the default value for the text input:
-                 * 
-                 * default is empty string, pass any string value
-                 * 
-                 *********************/
+                /*********************
+                * 
+                * Use this prop to set the default value for the text input:
+                * 
+                * default is empty string, pass any string value
+                * 
+                *********************/
 
                 textAlign={this.props.textAlign}
 
@@ -145,7 +148,7 @@ class RNInputMasking extends React.Component {
                  * 
                  *********************/
 
-                returnKeyType={this.props.returnKeyType} 
+                returnKeyType={this.props.returnKeyType}
 
                 /*********************
                  * 
@@ -171,52 +174,57 @@ class RNInputMasking extends React.Component {
 
                 maskFormat={this.props.maskFormat}
 
-                /*********************
-                 * 
-                 * Use this prop to set the maskFormat for the text input:
-                 * 
-                 * Use the following format to set the maskFormat:
-                 * 
-                 * use A where you want to show the alphabet and use D where you want to show a digit
-                 * 
-                 * For example:
-                 * 
-                 * To mask the input for credit-card following format is suitable:
-                 * 
-                 * DDDD-DDDD-DDDD-DDDD
-                 * 
-                 * To mask the input for id card following format is suitable:
-                 * 
-                 * AA-DDD
-                 * 
-                 * To mask the input for date following format is suitable:
-                 * 
-                 * DD/DD/DD
-                 * 
-                 * To mask the input for phone-number following format is suitable:
-                 * 
-                 * > for eg if UK's phone no. needed to be masked:
-                 * 
-                 * +44-DDDD-DDDDDD
-                 * 
-                 *          !!! IMPORTANT !!!
-                 * 
-                 * use default or no maskType if using for other than credit-card or phone-number
-                 * 
-                 *********************/
- 
+            /*********************
+             * 
+             * Use this prop to set the maskFormat for the text input:
+             * 
+             * Use the following format to set the maskFormat:
+             * 
+             * use A where you want to show the alphabet and use D where you want to show a digit
+             * 
+             * For example:
+             * 
+             * To mask the input for credit-card following format is suitable:
+             * 
+             * DDDD-DDDD-DDDD-DDDD
+             * 
+             * To mask the input for id card following format is suitable:
+             * 
+             * AA-DDD
+             * 
+             * To mask the input for date following format is suitable:
+             * 
+             * DD/DD/DD
+             * 
+             * To mask the input for phone-number following format is suitable:
+             * 
+             * > for eg if UK's phone no. needed to be masked:
+             * 
+             * +44-DDDD-DDDDDD
+             * 
+             *          !!! IMPORTANT !!!
+             * 
+             * use default or no maskType if using for other than credit-card or phone-number
+             * 
+             *********************/
 
-        />
+
+            />
+        </View>
     }
 
- 
+
 }
 
 const styles = StyleSheet.create({
-    bottom: {
+    field: {
         height: '100%',
         width: '100%',
     },
+    fieldContainer: {
+        height: 100,
+        width: 100
+    }
 })
 
 
