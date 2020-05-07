@@ -1,5 +1,5 @@
 import React from 'react'
-import { requireNativeComponent, StyleSheet, View } from 'react-native';
+import { requireNativeComponent, StyleSheet, View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 
 let InputMasking = requireNativeComponent(`InputMasking`);
@@ -28,7 +28,11 @@ class RNInputMasking extends React.Component {
                  * 
                  *********************/
 
-                onFocus={this.props.onFocus}
+                // onFocus={this.props.onFocus}
+                { ...( Platform.OS == "android" ? 
+                {onFocus:this.props.onFocus} 
+              : {onFocusText:this.props.onFocus}  ) 
+          }
 
                 /*********************
                  * 
@@ -51,7 +55,11 @@ class RNInputMasking extends React.Component {
                  * 
                  *********************/
 
-                onSubmitEditing={this.props.onSubmitEditing}
+                // onSubmitEditing={ this.props.onSubmitEditing}
+                { ...( Platform.OS == "android" ? 
+                      {onSubmitEditing: this.props.onSubmitEditing} 
+                    : {onSubmitText: this.props.onSubmitEditing} ) 
+                }
 
                 /*********************
                  * 
@@ -63,6 +71,7 @@ class RNInputMasking extends React.Component {
 
 
                 underlineColorAndroid={this.props.underlineColorAndroid}
+
 
                 /*********************
                  * 
