@@ -262,8 +262,7 @@ const styles = StyleSheet.create({
     },
     fieldContainer: {
         height: 100,
-        width: 100,
-        backgroundColor: 'red'
+        width: 100, 
     }
 })
 
