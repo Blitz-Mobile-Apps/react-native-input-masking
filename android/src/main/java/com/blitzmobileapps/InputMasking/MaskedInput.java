@@ -49,7 +49,7 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
         spannable  = new SpannableString("");
         span = new RelativeSizeSpan(1.0f);
 
-        ColorStateList colorStateList = ColorStateList.valueOf(Color.LTGRAY);
+        ColorStateList colorStateList = ColorStateList.valueOf(Color.TRANSPARENT);
         ViewCompat.setBackgroundTintList(this,colorStateList);
 
         this.setPlaceHolderColor(Color.LTGRAY);
