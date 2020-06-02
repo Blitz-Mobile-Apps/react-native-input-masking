@@ -43,7 +43,7 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
   
   let someFrame = CGRect(x: 0.0, y: 0.0, width: 100.0, height: 30.0)
   
-  @objc var disabled : Bool = true;
+  @objc var disabled : Bool = false;
   @objc var numericErrorText : String = "Digit required";
   @objc var alphaErrorText : String = "Aplhabet required";
   @objc var maskFormat = "DD/DD/DD";
@@ -138,14 +138,7 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
     return true
   }
   
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    super.touchesBegan(touches, with: event)
-    print("Touch gesture detected")
-  }
-  
-  override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-    return true
-  }
+    
   
   
   private func intializeEditingEvents(){
@@ -168,22 +161,22 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
   
   private func initilaizeView(){
     self.frame = self.bounds
-//    intializeEditingEvents()
+    intializeEditingEvents()
     self.text = value
     // for testing purposes adding background color
     self.adjustsFontSizeToFitWidth = true;
     self.font = UIFont.systemFont(ofSize: textSize)
-    self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//    self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 //    self.placeholder = "Enter text here"
     // self.becomeFirstResponder()
-    self.borderStyle = UITextField.BorderStyle.roundedRect
     self.autocorrectionType = UITextAutocorrectionType.no
     self.keyboardType = UIKeyboardType.default
     self.returnKeyType = UIReturnKeyType.done
-    self.clearButtonMode = UITextField.ViewMode.whileEditing
+//    self.clearButtonMode = UITextField.ViewMode.whileEditing
     self.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didRecognizeTapGesture(_:)))
     self.addGestureRecognizer(tapGesture)
+    self.borderStyle = .none;
     self.addTarget(self, action:  #selector(toggleEditing), for: .editingChanged)
     textField.delegate = self
     self.sizeToFit()
@@ -290,6 +283,8 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
       guard gesture.state == .ended, self.frame.contains(point) else { return }
 
     print("Tap gesture detected on self")
+    
+    self.becomeFirstResponder()
     
     self.addTarget(self, action:  #selector(toggleEditing), for: .allEditingEvents)
       //doSomething()

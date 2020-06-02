@@ -258,7 +258,6 @@ const styles = StyleSheet.create({
     field: {
         height: '100%',
         width: '100%',  
-        backgroundColor: 'rgba(0,0,0,0.1)'
     },
     fieldContainer: {
         height: 100,
