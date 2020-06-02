@@ -84,24 +84,24 @@ Following is the elaborated example on how to use the **maskFormat** prop:
 > Use the following format to set the maskFormat:
 >
 >**For android**:
-use A where you want to show the alphabet and use D where you want to show a digit
-For example:
-To mask the input for credit-card following format is suitable:
- DDDD-DDDD-DDDD-DDDD
- To mask the input for id card following format is suitable:
- AA-DDD
-To mask the input for date following format is suitable:
-DD/DD/DD
- To mask the input for phone-number following format is suitable:
-  for eg if UK's phone no. needed to be masked:
- +44-DDDD-DDDDDD
- **!!! IMPORTANT !!!**
-use default or no maskType if using for other than credit-card or phone-number
+>use A where you want to show the alphabet and use D where you want to show a digit
+>For example:
+>To mask the input for credit-card following format is suitable:
+> DDDD-DDDD-DDDD-DDDD
+>To mask the input for id card following format is suitable:
+> AA-DDD
+>To mask the input for date following format is suitable:
+> DD/DD/DD
+>To mask the input for phone-number following format is suitable:
+>for eg if UK's phone no. needed to be masked:
+> +44-DDDD-DDDDDD
+> **!!! IMPORTANT !!!**
+>use default or no maskType if using for other than credit-card or phone-number
 >
 >**For ios**:
-use A where you want to show the alphabet and use D where you want to show a digit.
-For example:
-AA-DDD
+>use A where you want to show the alphabet and use D where you want to show a digit.
+>For example:
+>AA-DDD
 
 License
 ----
