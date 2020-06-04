@@ -74,6 +74,8 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
 
     private void onFocus(){
+       final EditText editText = this;
+
         this.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
@@ -84,6 +86,7 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
                 else{
                     shouldCallMaskingMethod=false;
                     releaseFocusEvent(hasFocus);
+
                 }
             }
         });
@@ -153,8 +156,9 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
                 int endIndex = spannable.getSpanEnd(span);
 
 
-                if(shouldCallMaskingMethod)
+                if(shouldCallMaskingMethod){
                     callMaskingMethods( editText,beginIndex, endIndex);
+                }
 
 
             }
@@ -194,6 +198,7 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
             }
             else{
                 Log.d("shouldMaskInput called", "afterTextChanged: " +lengthOfInput);
+                if(editText.getText().toString().length()>0)
                 this.setMaxLength(lengthOfInput);
             }
 
@@ -212,7 +217,8 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
             }
             else{
                 Log.d("state check D 1 e   ", "shouldMaskInput: " +lengthOfInput);
-                this.setMaxLength(lengthOfInput);
+                if(editText.getText().toString().length()>0)
+                    this.setMaxLength(lengthOfInput);
             }
 
         }
@@ -229,7 +235,8 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
             }
             else{
                 Log.d("defaultMasking called", "defaultMasking: " +lengthOfInput);
-                this.setMaxLength(lengthOfInput);
+                if(editText.getText().toString().length()>0)
+                    this.setMaxLength(lengthOfInput);
             }
         }
     }
@@ -349,9 +356,10 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
                 editText.setText(updatedText);
                 Selection.setSelection(editText.getText(), editText.getText().length());
-                textChange(editText.getText().toString());
 
             }
+            textChange(editText.getText().toString());
+
 
         }
 
@@ -377,9 +385,10 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
                 editText.setText(updatedText);
                 Selection.setSelection(editText.getText(), editText.getText().length());
-                textChange(editText.getText().toString());
 
             }
+
+            textChange(editText.getText().toString());
 
         }
 
@@ -404,9 +413,10 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
                 editText.setText(updatedText);
                 Selection.setSelection(editText.getText(), updatedText.length());
-                textChange(editText.getText().toString());
 
             }
+
+            textChange(editText.getText().toString());
 
         }
     }
@@ -427,9 +437,10 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
                 editText.setText(updatedText);
                 Selection.setSelection(editText.getText(), updatedText.length());
-                textChange(editText.getText().toString());
 
             }
+
+            textChange(editText.getText().toString());
 
         }
     }
