@@ -1,5 +1,5 @@
 import React from 'react'
-import { requireNativeComponent, StyleSheet, View, Platform } from 'react-native';
+import { requireNativeComponent, StyleSheet, View, Platform, findNodeHandle, UIManager } from 'react-native';
 import PropTypes from 'prop-types';
 
 let InputMasking = requireNativeComponent(`InputMasking`);
@@ -11,15 +11,35 @@ class RNInputMasking extends React.Component {
     }
 
 
+    focus = () => {
+        UIManager.dispatchViewManagerCommand(
+            findNodeHandle(this.inputMaskingRef),
+            UIManager.getViewManagerConfig('InputMasking').Commands
+                .focus,
+            []
+        );
+    }
+
+    blur = () => {
+        UIManager.dispatchViewManagerCommand(
+            findNodeHandle(this.inputMaskingRef),
+            UIManager.getViewManagerConfig('InputMasking').Commands
+                .blur,
+            []
+        );
+    }
 
     render() {
 
-       
 
-      return   <View style={[styles.fieldContainer, this.props.style]} >
 
-        <InputMasking
-                 style={styles.field}
+        return <View style={[styles.fieldContainer, this.props.style]} >
+
+            <InputMasking
+
+                ref={_ref => this.inputMaskingRef = _ref}
+
+                style={styles.field}
 
                 onChangeText={this.props.onChangeText}
 
@@ -31,7 +51,7 @@ class RNInputMasking extends React.Component {
                  * console.log(' onChangeText ', event.nativeEvent.text )
                  * 
                  *********************/
- 
+
                 {...(Platform.OS == "android" ?
                     { onFocus: this.props.onFocus }
                     : { onFocusText: this.props.onFocus })
@@ -58,7 +78,7 @@ class RNInputMasking extends React.Component {
                  * 
                  *********************/
 
- 
+
                 {...(Platform.OS == "android" ?
                     { onSubmitEditing: this.props.onSubmitEditing }
                     : { onSubmitText: this.props.onSubmitEditing })
@@ -84,11 +104,11 @@ class RNInputMasking extends React.Component {
                  * 
                  *********************/
 
- 
+
                 {...(Platform.OS == "android" ?
-                { placeholder: this.props.placeholder }
-                : { _placeholder: this.props.placeholder })
-            }
+                    { placeholder: this.props.placeholder }
+                    : { _placeholder: this.props.placeholder })
+                }
 
                 /*********************
                  * 
@@ -108,11 +128,11 @@ class RNInputMasking extends React.Component {
                 * 
                 *********************/
 
- 
+
                 {...(Platform.OS == "android" ?
-                { textColor: this.props.textColor }
-                : { _textColor: this.props.textColor })
-            }
+                    { textColor: this.props.textColor }
+                    : { _textColor: this.props.textColor })
+                }
 
                 /*********************
                 * 
@@ -162,11 +182,11 @@ class RNInputMasking extends React.Component {
                  * default is Left, can be either of Left or Right
                  * 
                  *********************/
- 
+
                 {...(Platform.OS == "android" ?
-                { keyboardType: this.props.keyboardType }
-                : { _keyboardType: this.props.keyboardType })
-            }
+                    { keyboardType: this.props.keyboardType }
+                    : { _keyboardType: this.props.keyboardType })
+                }
 
                 /*********************
                  * 
@@ -181,12 +201,12 @@ class RNInputMasking extends React.Component {
                  * The password property for the keyboard will conceal the input with default dots
                  * 
                  *********************/
- 
+
 
                 {...(Platform.OS == "android" ?
-                { returnKeyType: this.props.returnKeyType }
-                : { _returnKeyType: this.props.returnKeyType })
-            }
+                    { returnKeyType: this.props.returnKeyType }
+                    : { _returnKeyType: this.props.returnKeyType })
+                }
 
                 /*********************
                  * 
@@ -212,43 +232,44 @@ class RNInputMasking extends React.Component {
 
                 maskFormat={this.props.maskFormat}
 
-            /*********************
-             * 
-             * Use this prop to set the maskFormat for the text input:
-             * 
-             * Use the following format to set the maskFormat:
-             * 
-             * use A where you want to show the alphabet and use D where you want to show a digit
-             * 
-             * For example:
-             * 
-             * To mask the input for credit-card following format is suitable:
-             * 
-             * DDDD-DDDD-DDDD-DDDD
-             * 
-             * To mask the input for id card following format is suitable:
-             * 
-             * AA-DDD
-             * 
-             * To mask the input for date following format is suitable:
-             * 
-             * DD/DD/DD
-             * 
-             * To mask the input for phone-number following format is suitable:
-             * 
-             * > for eg if UK's phone no. needed to be masked:
-             * 
-             * +44-DDDD-DDDDDD
-             * 
-             *          !!! IMPORTANT !!!
-             * 
-             * use default or no maskType if using for other than credit-card or phone-number
-             * 
-             *********************/
+                /*********************
+                 * 
+                 * Use this prop to set the maskFormat for the text input:
+                 * 
+                 * Use the following format to set the maskFormat:
+                 * 
+                 * use A where you want to show the alphabet and use D where you want to show a digit
+                 * 
+                 * For example:
+                 * 
+                 * To mask the input for credit-card following format is suitable:
+                 * 
+                 * DDDD-DDDD-DDDD-DDDD
+                 * 
+                 * To mask the input for id card following format is suitable:
+                 * 
+                 * AA-DDD
+                 * 
+                 * To mask the input for date following format is suitable:
+                 * 
+                 * DD/DD/DD
+                 * 
+                 * To mask the input for phone-number following format is suitable:
+                 * 
+                 * > for eg if UK's phone no. needed to be masked:
+                 * 
+                 * +44-DDDD-DDDDDD
+                 * 
+                 *          !!! IMPORTANT !!!
+                 * 
+                 * use default or no maskType if using for other than credit-card or phone-number
+                 * 
+                 *********************/
 
 
+                fontFamily={this.props.fontFamily}
             />
-         </View>
+        </View>
     }
 
 
@@ -257,11 +278,11 @@ class RNInputMasking extends React.Component {
 const styles = StyleSheet.create({
     field: {
         height: '100%',
-        width: '100%',  
+        width: '100%',
     },
     fieldContainer: {
         height: 100,
-        width: 100, 
+        width: 100,
     }
 })
 

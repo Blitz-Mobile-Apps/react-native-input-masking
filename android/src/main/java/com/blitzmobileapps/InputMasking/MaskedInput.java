@@ -3,6 +3,7 @@ package com.blitzmobileapps.InputMasking;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -27,6 +28,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.facebook.react.views.textinput.ReactEditText;
 
 public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
@@ -482,7 +484,33 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
 
 
+
+
     //    ******************* Methods visible to other classes ********************
+
+    public void focus(){
+
+        this.requestFocus();
+
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getContext().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+
+        inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
+
+    }
+
+
+    public void blur(){
+
+
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getContext().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+
+        inputMethodManager.hideSoftInputFromWindow(this.getWindowToken(), 0);
+
+        this.clearFocus();
+
+    }
 
     public void setFontSize( float size ){
         try{
@@ -662,6 +690,17 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
     }
 
+    public void setFontFamily( String fontFamily ){
+        try{
+            Log.d("setFontFamily", "setFontFamily: "+fontFamily);
+            Typeface fontFace =  Typeface.createFromAsset( getContext().getAssets(),
+                    "fonts/"+fontFamily);
+            this.setTypeface(fontFace);
 
+        }
+        catch (Exception e){
+            Log.d("setFontFamily", "setFontFamily: "+e);
+        }
+    }
 
 }

@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -15,6 +16,8 @@ import javax.annotation.Nullable;
 public class InputMaskingModule extends SimpleViewManager <MaskedInput> {
 
     public static final String REACT_CLASS = "InputMasking";
+    public static final int COMMAND_FOCUS = 1;
+    public static final int COMMAND_BLUR = 2;
 
     @NonNull
     @Override
@@ -26,6 +29,40 @@ public class InputMaskingModule extends SimpleViewManager <MaskedInput> {
     @Override
     protected MaskedInput createViewInstance(@NonNull ThemedReactContext reactContext) {
         return new MaskedInput(reactContext);
+    }
+
+    @Nullable
+    @Override
+    public Map<String, Integer> getCommandsMap() {
+        // You need to implement this method and return a map with the readable
+        // name and constant for each of your commands. The name you specify
+        // here is what you'll later use to access it in react-native.
+
+
+        return MapBuilder.of(
+                        "focus",
+                        COMMAND_FOCUS ,
+                "blur",
+                COMMAND_BLUR
+        );
+    }
+
+    @Override
+    public void receiveCommand(final MaskedInput maskedInput, int commandId, @Nullable ReadableArray args) {
+        // This will be called whenever a command is sent from react-native.
+        super.receiveCommand(maskedInput, commandId, args);
+
+        switch (commandId) {
+            case COMMAND_FOCUS:{
+                maskedInput.focus();
+                break;
+            }
+
+            case COMMAND_BLUR:{
+                maskedInput.blur();
+                break;
+            }
+        }
     }
 
     @Override
@@ -116,6 +153,11 @@ public class InputMaskingModule extends SimpleViewManager <MaskedInput> {
     @ReactProp(name = "maskFormat")
     public void setMaskFormat(MaskedInput maskedInput, @Nullable String maskFormat) {
         maskedInput.setMaskFormat(maskFormat);
+    }
+
+    @ReactProp(name = "fontFamily")
+    public void setFontFamily(MaskedInput maskedInput, @Nullable String fontFamily) {
+        maskedInput.setFontFamily(fontFamily);
     }
 
 
