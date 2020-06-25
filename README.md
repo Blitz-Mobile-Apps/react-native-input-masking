@@ -26,6 +26,8 @@ $ pod install
 Following is the basic example of using **react-native-input-masking** in your app.
 ```sh
 import RNInputMasking from 'react-native-input-masking'
+import {Text, TouchableOpacity} from 'react-native'
+
 
 class ExampleApp extends React.Component {
 
@@ -36,6 +38,20 @@ class ExampleApp extends React.Component {
   onChangeText = ({ nativeEvent }) => {
     this.setState({ value: nativeEvent.text })
   }
+  
+   blur = () => {
+    if(this.inputMaskRef){
+      this.inputMaskRef.blur()
+    }
+  }
+
+  focus = () => {
+    if(this.inputMaskRef){
+      this.inputMaskRef.focus()
+    }
+  }
+
+  
 
   render() {
     return ( 
@@ -47,10 +63,23 @@ class ExampleApp extends React.Component {
             alignSelf: 'center',
             marginTop: 5
           }}
+          ref={_ref => this.inputMaskRef = _ref}
           value={this.state.value}
           onChangeText={this.onChangeText}
           maskFormat="DD-DD-DD"
         /> 
+        
+        <TouchableOpacity onPress={this.blur}>
+          <Text>
+            blur
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={this.focus}>
+          <Text>
+            focus
+          </Text>
+        </TouchableOpacity>
     );
   };
 }
@@ -59,25 +88,28 @@ export default ExampleApp;
 ```
 
 ### More Props
-| Name      | Description | Accepted Values |
-| :----:       |    :----:   |     :----: |
-| style      | The style property to set the height, width and so on.       | -  |
-| onChangeText   | This callback function is helpful if you want to get access to the values changing while typing the text.| A call back function  |
-| onFocus   | This callback function is helpful when you want to know when the input field is focus or blurred. | A call back function |
-| onErrorForMasking   | This callback function is helpful when you want to know why the typing is stopped. (The typing is stopped when the user types a character that doesn't match the given format.) | A call back function |
-| onSubmitEditing   | This callback function is helpful when you want to know when the user has pressed the return key.         | A call back function |
-| underlineColorAndroid   | Use this prop to set the underline color of the text input. (Android only)   | Any hex color, default: #cccccc|
-| placeholder   | Use this prop to set the placeholder for the text input. | Any string |
-| placeholderTextColor   | Use this prop to set the placeholder text color for the text input. | Any hex color, default: #cccccc |
-| textColor   | Use this prop to set the text color for the text input. | Any hex color, default: Os's default |
-| textSize   | Use this prop to set the text size for the text input | Any number, default: Os's default |
-| disabled   | Use this prop to disable the editing for the text input. | Any boolean, default: false |
-| value   | Use this prop to set the default value for the text input. | Any String, default: "" |
-| textAlign   | Use this prop to set the alignment of the text inside the text input. |"Left" or "Right", default: "Left" |
-| keyboardType   | Use this prop to set the keyboard type for the text input. | "number-pad" , "date-time" , "email-address" , "password" , default: Os's default |
-| returnKeyType   | Use this prop to set the returnKeyType of the keyboard for the text input. | "go" , "next" , "search" , "done" , default: "done" |
-| maskType   | Use this prop to set the maskType for the text input. (Android only) | "credit-card" , "phone-number" , "default" |
-| maskFormat   | Use this prop to set the maskFormat for the text input. | Use A where you want to show the alphabet and use D where you want to show a digit. Eg: DD-AA-DD |
+| Name      | Description | Accepted Values | Platform (ios or android) |
+| :----:       |    :----:   |     :----: |     :----: |
+| style      | The style property to set the height, width and so on.       | -  | both |
+| onChangeText   | This callback function is helpful if you want to get access to the values changing while typing the text.| A call back function  | both |
+| onFocus   | This callback function is helpful when you want to know when the input field is focus or blurred. | A call back function | both |
+| onErrorForMasking   | This callback function is helpful when you want to know why the typing is stopped. (The typing is stopped when the user types a character that doesn't match the given format.) | A call back function | both |
+| onSubmitEditing   | This callback function is helpful when you want to know when the user has pressed the return key.         | A call back function | both |
+| underlineColorAndroid   | Use this prop to set the underline color of the text input.  | Any hex color, default: #cccccc| android |
+| placeholder   | Use this prop to set the placeholder for the text input. | Any string | both |
+| placeholderTextColor   | Use this prop to set the placeholder text color for the text input. | Any hex color, default: #cccccc | both |
+| textColor   | Use this prop to set the text color for the text input. | Any hex color, default: Os's default | both |
+| textSize   | Use this prop to set the text size for the text input | Any number, default: Os's default | both |
+| disabled   | Use this prop to disable the editing for the text input. | Any boolean, default: false | both |
+| value   | Use this prop to set the default value for the text input. | Any String, default: "" | both |
+| textAlign   | Use this prop to set the alignment of the text inside the text input. |"Left" or "Right", default: "Left" | both |
+| keyboardType   | Use this prop to set the keyboard type for the text input. | "number-pad" , "date-time" , "email-address" , "password" , default: Os's default | both |
+| returnKeyType   | Use this prop to set the returnKeyType of the keyboard for the text input. | "go" , "next" , "search" , "done" , default: "done" | both |
+| maskType   | Use this prop to set the maskType for the text input. | "credit-card" , "phone-number" , "default" | android |
+| maskFormat   | Use this prop to set the maskFormat for the text input. | Use A where you want to show the alphabet and use D where you want to show a digit. Eg: DD-AA-DD | both |
+| fontFamily   | Use this prop to set the font-family for the text input. | Pass the name of the font which you have in your project. (for eg: Poppins-Bold.otf ) | Android |
+| focus   | You can use this method by creating a ref of the text input. | - | Android |
+| blur   | You can use this method by creating a ref of the text input. | - | Android |
 
 ### Important Note
 Following is the elaborated example on how to use the **maskFormat** prop:
