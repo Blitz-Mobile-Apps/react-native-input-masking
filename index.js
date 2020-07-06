@@ -267,7 +267,11 @@ class RNInputMasking extends React.Component {
                  *********************/
 
 
-                fontFamily={this.props.fontFamily}
+                {...(Platform.OS == "ios" ?
+                    { fontType: this.props.fontFamily.split(".")[0] }
+                    : { fontFamily: this.props.fontFamily })
+                }
+                
             />
         </View>
     }
