@@ -13,7 +13,7 @@
 #import <React/RCTBridgeModule.h>
 
 
-@interface RCT_EXTERN_MODULE(SimpleTextRN, RCTViewManager)
+@interface RCT_EXTERN_MODULE(InputMasking, RCTViewManager)
 
 
 RCT_EXTERN_METHOD(focus:(nonnull NSNumber *)node)
