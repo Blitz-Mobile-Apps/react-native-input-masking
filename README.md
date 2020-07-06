@@ -107,9 +107,9 @@ export default ExampleApp;
 | returnKeyType   | Use this prop to set the returnKeyType of the keyboard for the text input. | "go" , "next" , "search" , "done" , default: "done" | both |
 | maskType   | Use this prop to set the maskType for the text input. | "credit-card" , "phone-number" , "default" | android |
 | maskFormat   | Use this prop to set the maskFormat for the text input. | Use A where you want to show the alphabet and use D where you want to show a digit. Eg: DD-AA-DD | both |
-| fontFamily   | Use this prop to set the font-family for the text input. | Pass the name of the font which you have in your project. (for eg: Poppins-Bold.otf ) | android |
-| focus   | You can use this method by creating a ref of the text input. | - | android |
-| blur   | You can use this method by creating a ref of the text input. | - | android |
+| fontFamily   | Use this prop to set the font-family for the text input. | Pass the name of the font which you have in your project. (for eg: Poppins-Bold.otf ) | both |
+| focus   | You can use this method by creating a ref of the text input. | - | both |
+| blur   | You can use this method by creating a ref of the text input. | - | both |
 
 ### Important Note
 Following is the elaborated example on how to use the **maskFormat** prop:
@@ -134,8 +134,12 @@ Following is the elaborated example on how to use the **maskFormat** prop:
 >use A where you want to show the alphabet and use D where you want to show a digit.
 >For example:
 >AA-DDD
+> **!!! IMPORTANT !!!** 
+>To mask the input for phone-number following format is suitable:
+>for eg if UK's phone no. needed to be masked:
+> +44-DDDD-DDDDDD
 
-License
+License 
 ----
 
 MIT
