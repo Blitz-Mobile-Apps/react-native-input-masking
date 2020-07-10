@@ -359,10 +359,11 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
                 editText.setText(updatedText);
                 Selection.setSelection(editText.getText(), editText.getText().length());
 
+                
+
             }
-            textChange(editText.getText().toString());
-
-
+            
+  textChange(editText.getText().toString());
         }
 
 
@@ -388,14 +389,17 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
                 editText.setText(updatedText);
                 Selection.setSelection(editText.getText(), editText.getText().length());
 
+                  textChange(editText.getText().toString());
+
             }
 
-            textChange(editText.getText().toString());
+          
 
         }
 
 
     }
+    
 
     private void creditCardMasking(EditText editText, int beginIndex, int endIndex){
 
