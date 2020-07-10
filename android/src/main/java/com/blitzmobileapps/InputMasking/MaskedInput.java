@@ -342,7 +342,7 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
             }
     }
 
-    private void phoneNumberMasking(EditText editText, int beginIndex, int endIndex){
+     private void phoneNumberMasking(EditText editText, int beginIndex, int endIndex){
 
 
 
@@ -359,11 +359,10 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
                 editText.setText(updatedText);
                 Selection.setSelection(editText.getText(), editText.getText().length());
 
-                
 
             }
-            
-  textChange(editText.getText().toString());
+
+                 textChange(editText.getText().toString());
         }
 
 
@@ -380,6 +379,7 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
 
                 firstSymbolFlag = true;
                 separator = maskFormatCharacter;
+
             }
 
             if(firstSymbolFlag && (  maskFormatCharacter == separator && textFieldCharacter != separator  )){
@@ -389,11 +389,11 @@ public class MaskedInput extends androidx.appcompat.widget.AppCompatEditText {
                 editText.setText(updatedText);
                 Selection.setSelection(editText.getText(), editText.getText().length());
 
-                  textChange(editText.getText().toString());
+                textChange(editText.getText().toString());
 
             }
 
-          
+        
 
         }
 
