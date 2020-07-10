@@ -1,37 +1,42 @@
+//
+//  File.swift
+//  inputMasking
+//
+//  Created by Macbook on 01/04/2020.
+//  Copyright © 2020 Facebook. All rights reserved.
+//
 
 import UIKit
 import AVFoundation
 
-extension UIColor {
-    public convenience init?(hex: String) {
-        let r, g, b, a: CGFloat
 
-        if hex.hasPrefix("#") {
-            let start = hex.index(hex.startIndex, offsetBy: 1)
-            let hexColor = String(hex[start...])
 
-            if hexColor.count == 8 {
-                let scanner = Scanner(string: hexColor)
-                var hexNumber: UInt64 = 0
+  extension UIColor {
+      func HexToColor(hexString: String, alpha:CGFloat? = 1.0) -> UIColor {
+          // Convert hex string to an integer
+        let hexint = Int(self.intFromHexString(hexStr: hexString))
+          let red = CGFloat((hexint & 0xff0000) >> 16) / 255.0
+          let green = CGFloat((hexint & 0xff00) >> 8) / 255.0
+          let blue = CGFloat((hexint & 0xff) >> 0) / 255.0
+          let alpha = alpha!
+          // Create color object, specifying alpha as well
+          let color = UIColor(red: red, green: green, blue: blue, alpha: alpha)
+          return color
+      }
+    
+    func intFromHexString(hexStr: String) -> UInt32 {
+         var hexInt: UInt32 = 0
+         // Create scanner
+      let scanner: Scanner = Scanner(string: hexStr)
+         // Tell scanner to skip the # character
+      scanner.charactersToBeSkipped = NSCharacterSet(charactersIn: "#") as CharacterSet
+         // Scan hex value
+      scanner.scanHexInt32(&hexInt)
+         return hexInt
+     }
+  }
 
-                if scanner.scanHexInt64(&hexNumber) {
-                    r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
-                    g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
-                    b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
-                    a = CGFloat(hexNumber & 0x000000ff) / 255
-
-                    self.init(red: r, green: g, blue: b, alpha: a)
-                    return
-                }
-            }
-        }
-
-        return nil
-    }
-}
-
-  
-class SimpleInput : UIView,  UITextFieldDelegate  {
+class MaskedInput : UITextField,  UITextFieldDelegate  {
   
   
   
@@ -39,7 +44,7 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
   
   let someFrame = CGRect(x: 0.0, y: 0.0, width: 100.0, height: 30.0)
   
-  @objc var disabled : Bool = true;
+  @objc var disabled : Bool = false;
   @objc var numericErrorText : String = "Digit required";
   @objc var alphaErrorText : String = "Aplhabet required";
   @objc var maskFormat = "DD/DD/DD";
@@ -47,11 +52,11 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
   private var isMasking : Bool = false
   @objc var value: String = ""
   @objc var textSize: CGFloat = 15
-  @objc var textColor: String = "#fffff"
-  @objc var placeholder: String = "Type something"
+  @objc var _textColor: String = "#fffff"
+  @objc var _placeholder: String = "Type something"
   @objc var textAlign: String = "left"
-  @objc var keyboardType: String = "default"
-  @objc var returnKeyType: String = "done"
+  @objc var _keyboardType: String = "default"
+  @objc var _returnKeyType: String = "done"
   @objc var placeholderTextColor: String = "#fffff"
   @objc var onChangeText:RCTDirectEventBlock?
   @objc var onFocusText:RCTDirectEventBlock?
@@ -59,10 +64,9 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
   @objc var onSubmitText:RCTDirectEventBlock?
   @objc var fontType: String = "PB"
 
-
   
 
-  private var textField : UITextField = UITextField.init(frame: CGRect(x: 0, y: 350, width:350, height: 50))
+  private var textField : UITextField = UITextField.init(frame: CGRect(x: 0, y: 0, width:0, height: 0))
   
 //  private var initialIndex : String.Index = "teeam".firstIndex(of: "a")!;
   private var initialIndexOfSeperator : Int = 3;
@@ -77,42 +81,16 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
     initilaizeView()
   }
   
-  
-  func insertExplicitMaskValues () -> String {
-    var expStr = ""
-    var mainStr = self.textField.text
-    for (index,each) in maskFormat.enumerated() {
-      if(each.isLetter && each.isLowercase){
-        expStr = String(each)
-//        mainStr! += expStr
-          
-          
-      }
-      if(each.isNumber){
-        expStr = String(each)
-//        mainStr! += expStr
-//        mainStr?.insert(each, at: String.Index(encodedOffset: index))
-      }
-      
-    }
-    print("New string is",mainStr)
-    return mainStr!
-
-  }
-  
   func identifySeperator(){
     for each in maskFormat {
       
         if(each == "+" )
-//          && maskFormat == "+DD-DDDD-DDDDDD")
         {
           print("Type of masking: Phone number masking")
           self.maskIdentifier = "-"
-          if(textField.text?.count == 1){
+          if(self.text?.count == 1){
             preText="+"
-//            preText += insertExplicitMaskValues()
-            self.textField.text! = preText
-
+            self.text! = preText
           }
           
           return
@@ -152,33 +130,23 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
   
   func textFieldDidEndEditing(_ textField: UITextField) {
     prepareMask()
-    onSubmitText!(["text":self.textField.text!])
+    onSubmitText!(["text":self.text!])
     print("Editing ended")
   }
   
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
+    self.resignFirstResponder()
     return true
   }
   
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    super.touchesBegan(touches, with: event)
-    print("Touch gesture detected")
-//    textField.addTarget(self, action:  #selector(toggleEditing), for: .allEditingEvents)
-//    self.textField.addTarget(self, action:  #selector(toggleEditing), for: .allEditingEvents)
     
-  }
-  
-  override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-    return true
-  }
   
   
   private func intializeEditingEvents(){
-    self.textField.addTarget(self, action: #selector(toggleEditing), for: UIControl.Event.editingDidBegin)
-    self.textField.addTarget(self, action: #selector(onTouchInside), for: .touchUpInside)
-    self.textField.addTarget(self, action: #selector(onTouchOutside), for: .touchUpOutside)
+    self.addTarget(self, action: #selector(toggleEditing), for: UIControl.Event.editingDidBegin)
+    self.addTarget(self, action: #selector(onTouchInside), for: .touchUpInside)
+    self.addTarget(self, action: #selector(onTouchOutside), for: .touchUpOutside)
   }
   
   @objc func onTouchInside(textField: UITextField) {
@@ -194,35 +162,25 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
  
   
   private func initilaizeView(){
-//    self.frame = textField.frame
     self.frame = self.bounds
-//    intializeEditingEvents()
-    self.textField.text = value
+    intializeEditingEvents()
+    self.text = value
     // for testing purposes adding background color
-//    textField.backgroundColor = UIColor.systemBlue
-    self.textField.adjustsFontSizeToFitWidth = true;
-//    let padding = UIEdgeInsets(top: 5, left: 5, bottom: 50, right: 50)
-//    self.textRect(forBounds: bounds.inset(by: padding))
-    self.textField.font = UIFont.systemFont(ofSize: textSize)
-    self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    self.textField.placeholder = "Enter text here"
-    self.becomeFirstResponder()
-//    self.self.addInteraction(UI)
-    self.textField.borderStyle = UITextField.BorderStyle.roundedRect
-    self.textField.autocorrectionType = UITextAutocorrectionType.no
-    self.textField.keyboardType = UIKeyboardType.default
-    self.textField.returnKeyType = UIReturnKeyType.done
-    self.textField.clearButtonMode = UITextField.ViewMode.whileEditing
-    self.textField.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
-//    self.beginTracking, with: <#T##UIEvent?#>)
+    self.adjustsFontSizeToFitWidth = true;
+    self.font = UIFont.systemFont(ofSize: textSize)
+//    self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//    self.placeholder = "Enter text here"
+    // self.becomeFirstResponder()
+    self.autocorrectionType = UITextAutocorrectionType.no
+    self.keyboardType = UIKeyboardType.default
+    self.returnKeyType = UIReturnKeyType.done
+//    self.clearButtonMode = UITextField.ViewMode.whileEditing
+    self.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didRecognizeTapGesture(_:)))
     self.addGestureRecognizer(tapGesture)
-    self.textField.addTarget(self, action:  #selector(toggleEditing), for: .editingChanged)
-//    var frame = self.textField.frame
-////    frame.size.height = textField.intrinsicContentSize.height
-////    frame.size.width = textField.intrinsicContentSize.width
+    self.borderStyle = .none;
+    self.addTarget(self, action:  #selector(toggleEditing), for: .editingChanged)
     textField.delegate = self
-    self.addSubview(textField)
     self.sizeToFit()
     self.translatesAutoresizingMaskIntoConstraints = true
   
@@ -233,56 +191,57 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
   
   
   func validateCharacter(_char: Character) -> Bool{
-    var isValidated = false;
-      if(_char == "-" || _char == "(" || _char == ")" || _char == "#" || _char == "@"){
-        isValidated =  true
-      }
-    if(_char == "+" || _char == "*" || _char == "|" || _char == " "){
-      isValidated =  true
-    }
-    if(_char == "/"){
-      isValidated =  true
-    }
-    
-          if(_char.isLetter && _char.isLowercase){
-            isValidated =  true
+     var isValidated = false;
+       if(_char == "-" || _char == "(" || _char == ")" || _char == "#" || _char == "@"){
+         isValidated =  true
+       }
+     if(_char == "+" || _char == "*" || _char == "|" || _char == " "){
+       isValidated =  true
+     }
+     if(_char == "/"){
+       isValidated =  true
+     }
+     
+           if(_char.isLetter && _char.isLowercase){
+             isValidated =  true
 
-          }
-          if(_char.isNumber){
-          isValidated =  true
+           }
+           if(_char.isNumber){
+           isValidated =  true
 
-          }
-    
-    
-    
-    if(!isValidated){
-      onErrorForMasking!(["error":"Unknown masking identifier"])
-    }
+           }
+     
+     
+     
+     if(!isValidated){
+       onErrorForMasking!(["error":"Unknown masking identifier"])
+     }
 
-    return isValidated
-  }
-  
-  
- @objc func focus() {
-    self.textField.becomeFirstResponder()
-    print("Became first responder by js ref focus")
-  }
-  
-  @objc func update(value: NSNumber) {
-     print("Getting ref value count from js: ", value)
+     return isValidated
    }
+   
+   
+  @objc func focus() {
+     self.textField.becomeFirstResponder()
+     print("Became first responder by js ref focus")
+   }
+   
+   @objc func update(value: NSNumber) {
+      print("Getting ref value count from js: ", value)
+    }
+  
+  
+  
 
-  override func becomeFirstResponder() -> Bool {
-    true
-  }
+  
   
    private func prepareMask(){
 
   
         var newStr = ""
-        let test = self.textField.text;
+        let test = self.text;
     for (index,each) in test!.enumerated() {
-          if(textField.text!.count >= 1){
+          if(self.text!.count >= 1){
            
             let test_char = maskFormat[maskFormat.index(maskFormat.startIndex, offsetBy: index)]
             print("Last item is : ",each , test_char , test!.count, index)
@@ -290,27 +249,22 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
             
             if(validateCharacter(_char: test_char)){
           let charIdentifier = test_char
-          print(charIdentifier,"here it is")
           newStr += String(charIdentifier)
-          self.textField.text = newStr
+          self.text = newStr
           }
-            
-            // temporary as far as i know, cause it stands against the main idea of inputMasking i.e : being able to generalize alphabets and digits rather than merely giving explicit alphas and digits in the mask itself
-          
             
             
           if(test_char == "A" && each.isLetter){
             newStr += String(each)
-            self.textField.text = newStr
+            self.text = newStr
           } else if(test_char == "A" && !each.isLetter){
             onErrorForMasking!(["error":alphaErrorText])
-//            onChangeText!(["text":self.textField.text!])
 
             }
             
           if(test_char == "D" && each.isNumber){
             newStr += String(each)
-            self.textField.text = newStr
+            self.text = newStr
           }else if(test_char == "D" && !each.isNumber){
             onErrorForMasking!(["error":numericErrorText])
           }
@@ -329,19 +283,15 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
    
   
   @objc private func toggleEditing(){
-    if(textField.text!.count > maskFormat.count){
-      textField.deleteBackward()
+    if(self.text!.count > maskFormat.count){
+      self.deleteBackward()
     }
-//    else if(textField.text!.count == maskFormat.count){
-//      toastMessage = "Max length reached"
-//    }
     else{
     print("Toggled editing from js to native")
     identifySeperator()
     prepareMask()
-//    print("New", insertExplicitMaskValues())
     }
-    onChangeText!(["text":self.textField.text!])
+    onChangeText!(["text":self.text!])
     
 
   }
@@ -357,7 +307,9 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
 
     print("Tap gesture detected on self")
     
-    self.textField.addTarget(self, action:  #selector(toggleEditing), for: .allEditingEvents)
+    self.becomeFirstResponder()
+    
+    self.addTarget(self, action:  #selector(toggleEditing), for: .allEditingEvents)
       //doSomething()
   }
   
@@ -366,7 +318,6 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     return true
   }
-
   
   
   
@@ -395,9 +346,6 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
     
     setProps(propsArray: changedProps)
     
-//    textField.placeholder = placeholder
-//    textField.sendActions(for: .editingChanged)
-//    textField.font = UIFont.systemFont(ofSize: textSize)
     print("Did set prop", changedProps ?? "not changed")
     
   }
@@ -422,7 +370,7 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
   
   private func setKeyboardType() -> UIKeyboardType {
     
-    switch keyboardType {
+    switch _keyboardType {
     case "email-address":
       return UIKeyboardType.emailAddress
     case "number-pad":
@@ -442,47 +390,9 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
     
   }
   
-  
-  private func setFontType() -> UIFont {
-    for family in UIFont.familyNames.sorted() {
-        let names = UIFont.fontNames(forFamilyName: family)
-        print("Family: \(family) Font names: \(names)")
-    }
-    
-    guard let customFont = UIFont(name: fontType, size: textSize) else{
-      onErrorForMasking!(["error":"Failed to Load the font provided"])
-      print("Failed to find font provided")
-      return UIFont(name: "AmericanTypewriter-CondensedBold", size: textSize)!;
-    }
-    return customFont
-    
-//    switch fontType {
-//    case "PB":
-//
-//      guard let customFont = UIFont(name: fontType, size: textSize) else {
-//              fatalError("""
-//                  Failed to load the "CustomFont-Light" font.
-//                  Make sure the font file is included in the project and the font name is spelled correctly.
-//                  """
-//              )
-//          }
-//          return customFont
-//    default:
-//      print("Default")
-//      guard let customFont = UIFont(name: "AmericanTypewriter-CondensedBold", size: textSize) else {
-//          fatalError("""
-//              Failed to load the "CustomFont-Light" font.
-//              Make sure the font file is included in the project and the font name is spelled correctly.
-//              """
-//          )
-//      }
-//      return customFont
-//    }
-  }
-  
   private func setReturnKeyType() -> UIReturnKeyType {
     
-    switch returnKeyType {
+    switch _returnKeyType {
     case "go":
       return  UIReturnKeyType.go
     case "next":
@@ -506,7 +416,22 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
     
   }
   
+  
+  private func setFontType() -> UIFont {
+    for family in UIFont.familyNames.sorted() {
+        let names = UIFont.fontNames(forFamilyName: family)
+        print("Family: \(family) Font names: \(names)")
+    }
+    
+    guard let customFont = UIFont(name: fontType, size: textSize) else{
+      onErrorForMasking!(["error":"Failed to Load the font provided"])
+      print("Failed to find font provided")
+      return UIFont(name: "AmericanTypewriter-CondensedBold", size: textSize)!;
+    }
+    return customFont
+    
 
+  }
   
   
   private func setProps(propsArray:[String]!){
@@ -516,57 +441,39 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
       if(prop != "onChangeText"){
         switch prop {
         case "textSize":
-           self.textField.font = UIFont.systemFont(ofSize: textSize)
+           self.font = UIFont.systemFont(ofSize: textSize)
           print("One prop at a time", prop)
-        case "placeholder":
-           self.textField.placeholder = placeholder
+        case "_placeholder":
+           self.placeholder = _placeholder
           print("One prop at a time", prop)
-//        case "placeholderTextColor":
-//          let color = UIColor(hex: placeholderTextColor)
-//          self.textField.attributedPlaceholder = NSAttributedString(string: placeholder,
-//                                                                    attributes: [NSAttributedString.Key.foregroundColor: color!])
          print("One prop at a time", prop)
         case "disabled":
-          self.textField.isEnabled = disabled;
+          self.isEnabled = disabled;
           print("One prop at a time", prop)
         case "value":
-          self.textField.text = value
+          self.text = value
           print("One prop at a time", prop)
-        case "keyboardType":
-          self.textField.keyboardType = setKeyboardType()
+        case "_keyboardType":
+          self.keyboardType = setKeyboardType()
           print("One prop at a time", prop)
         case "textAlign":
-          self.textField.textAlignment = setTextAlignment()
+          self.textAlignment = setTextAlignment()
           print("One prop at a time", prop)
-        case "returnKeyType":
-          self.textField.returnKeyType = setReturnKeyType()
+        case "_returnKeyType":
+          self.returnKeyType = setReturnKeyType()
+          print("One prop at a time", prop)
+        case "_textColor":
+          let color = UIColor().HexToColor(hexString: _textColor, alpha: 1.0)
+          self.textColor = color
           print("One prop at a time", prop)
         case "fontType":
           self.textField.font = setFontType()
-          print("One prop at a time", prop)
-        case "textColor":
-          let color = UIColor(hex: textColor)
-          self.textField.textColor = UIColor.red
           print("One prop at a time", prop)
 
         default:
         print("One prop at a time..")
 
         }
-//        if(prop == "textSize"){
-//          self.textField.font = UIFont.systemFont(ofSize: textSize)
-//          print("One prop at a time", prop)
-//        }
-//        if(prop == "placeholder"){
-//          self.textField.placeholder = placeholder
-//          print("One prop at a time", prop)
-//        }
-//        if(prop == "placeholderTextColor"){
-//          let color = UIColor(hex: placeholderTextColor)
-//              let paraStyle: NSParagraphStyle = NSParagraphStyle()
-//          self.textField.typingAttributes = [NSAttributedString.Key.foregroundColor : color ?? UIColor.purple, NSAttributedString.Key.paragraphStyle : paraStyle, NSAttributedString.Key.font : UIFont.init(name: "HelveticaNeue-Bold", size: 16) as Any]
-//                 print("One prop at a time", prop)
-//               }
         
       }else{
         print("Toggle text found")
@@ -575,21 +482,15 @@ class SimpleInput : UIView,  UITextFieldDelegate  {
     }
     
   }
-  
-//  @objc func setText(){
-////    textField.text = !(toggleText != nil)
-//
-//
-//  }
-//
-  
+
   
   
 }
 
 
-@objc (SimpleTextRN)
-class SimpleTextRN: RCTViewManager {
+
+@objc (InputMasking)
+class InputMasking: RCTViewManager {
   override class func requiresMainQueueSetup() -> Bool {
     return true;
   }
@@ -598,13 +499,13 @@ class SimpleTextRN: RCTViewManager {
   
   override func view() -> UIView! {
 //    var View  = SimpleInput()
-    return SimpleInput()
+    return MaskedInput()
   }
   
   
   @objc  func focus(_ node:NSNumber) {
       DispatchQueue.main.async {
-        let nativeComponent = self.bridge.uiManager.view(forReactTag: node) as! SimpleInput
+        let nativeComponent = self.bridge.uiManager.view(forReactTag: node) as! MaskedInput
         nativeComponent.focus()
       }
     }
@@ -616,47 +517,8 @@ class SimpleTextRN: RCTViewManager {
        DispatchQueue.main.async {                                // 2
          let nativeComponent = self.bridge.uiManager.view(             // 3
            forReactTag: node                                     // 4
-         ) as! SimpleInput                                       // 5
+         ) as! MaskedInput                                       // 5
          nativeComponent.update(value: count)                          // 6
        }
      }
 }
-
-
-//@objc (SwiftComponentManager)
-//class SwiftComponentManager: RCTViewManager {
-//
-//  override func view() -> UIView! {
-//    let labelView = MyLabelView()
-//    labelView.textColor = UIColor.orange
-//    labelView.textAlignment = NSTextAlignment.center
-//    return labelView
-//  }
-//
-//   func updateValueViaManager(_ node:NSNumber) {
-//    DispatchQueue.main.async {
-//      let myLabel = self.bridge.uiManager.view(forReactTag: node) as! MyLabelView
-//      myLabel.updateValue()
-//    }
-//  }
-//}
-//
-//class MyLabelView: UILabel {
-//
-//  private var _myText:String?
-//  var myText: String? {
-//    set {
-//      _myText = newValue
-//      self.text = newValue
-//    }
-//    get {
-//      return _myText
-//    }
-//  }
-//
-//  func updateValue() {
-//    self.backgroundColor = UIColor.red
-//    self.myText = "Updated NATIVE value!"
-//  }
-//
-//}
