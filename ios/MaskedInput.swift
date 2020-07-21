@@ -52,12 +52,12 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
   private var isMasking : Bool = false
   @objc var value: String = ""
   @objc var textSize: CGFloat = 15
-  @objc var _textColor: String = "#fffff"
+  @objc var _textColor: String = "#000000"
   @objc var _placeholder: String = "Type something"
   @objc var textAlign: String = "left"
   @objc var _keyboardType: String = "default"
   @objc var _returnKeyType: String = "done"
-  @objc var placeholderTextColor: String = "#fffff"
+  @objc var placeholderTextColor: String = "#cccccc"
   @objc var onChangeText:RCTDirectEventBlock?
   @objc var onFocusText:RCTDirectEventBlock?
   @objc var onErrorForMasking:RCTDirectEventBlock?
@@ -74,6 +74,8 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
 
 
   private var preText : String = "";
+    private var separator : String = "";
+    private var type : String = "";
   
 //  private var thisView : UIView
   override init(frame: CGRect) {
@@ -83,13 +85,33 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
   
   func identifySeperator(){
     for each in maskFormat {
+        
       
         if(each == "+" )
         {
-          print("Type of masking: Phone number masking")
+           
+            
           self.maskIdentifier = "-"
           if(self.text?.count == 1){
-            preText="+"
+            self.type = "phone"
+            print("Type of masking: Phone number masking ",self.text!, each)
+            var check = false
+            var phoneStr = ""
+            
+            for phoneChar in maskFormat {
+                
+                if( phoneChar != "+" && phoneChar.isNumber && check == false ){
+                    
+                    phoneStr += String(phoneChar)
+                }
+                else if(phoneChar != "+" && phoneChar.isNumber == false
+                    && phoneChar.isLetter == false && check == false){
+                    
+                     phoneStr += String(phoneChar)
+                    check = true
+                }
+            }
+            preText = "+"+phoneStr+self.text!
             self.text! = preText
           }
           
@@ -201,7 +223,7 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
      if(_char == "/"){
        isValidated =  true
      }
-     
+
            if(_char.isLetter && _char.isLowercase){
              isValidated =  true
 
@@ -210,12 +232,13 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
            isValidated =  true
 
            }
-     
-     
-     
-     if(!isValidated){
-       onErrorForMasking!(["error":"Unknown masking identifier"])
-     }
+
+
+
+//     if(!isValidated){
+//       onErrorForMasking!(["error":"Unknown masking identifier"])
+//     }
+   
 
      return isValidated
    }
@@ -237,26 +260,67 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
   
    private func prepareMask(){
 
+    if(self.text!.count <= 2){
+          self.separator = ""
+    }
   
         var newStr = ""
         let test = self.text;
+ 
+    print("new ",test!)
+    
     for (index,each) in test!.enumerated() {
           if(self.text!.count >= 1){
            
             let test_char = maskFormat[maskFormat.index(maskFormat.startIndex, offsetBy: index)]
-            print("Last item is : ",each , test_char , test!.count, index)
+            print("Last item is : ",each , test_char ,self.separator, index)
+ 
+           if( validateCharacter(_char: test_char)){
+         
+               let charIdentifier = test_char
 
+               newStr += String(charIdentifier)
             
-            if(validateCharacter(_char: test_char)){
-          let charIdentifier = test_char
-          newStr += String(charIdentifier)
-          self.text = newStr
-          }
+            if(self.type == "phone"){
+                 
+                  print("check here ",test_char,each)
+                
+                  if(self.separator == String(test_char) && String(each) != String(test_char)){
+                                newStr += String(each)
+                           }
+                  else if(self.separator != String(test_char) && String(each) != String(test_char)){
+                    newStr += String(each)
+                }
+
+                              self.text = newStr
+                              self.separator = String(charIdentifier)
+                
+            }
+            
+            else{
+                  
+                if(self.separator == ""){
+                                newStr += String(each)
+                           }
+                           else if(self.separator == String(test_char) && String(each) != String(test_char)){
+                                newStr += String(each)
+                           }
+                             
+                              self.text = newStr
+                              self.separator = String(charIdentifier)
+                                 
+                              
+                          }
+                
+            }
+            
+           
             
             
           if(test_char == "A" && each.isLetter){
             newStr += String(each)
             self.text = newStr
+          
           } else if(test_char == "A" && !each.isLetter){
             onErrorForMasking!(["error":alphaErrorText])
 
@@ -265,6 +329,7 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
           if(test_char == "D" && each.isNumber){
             newStr += String(each)
             self.text = newStr
+//            print("prev d ",self.text!,each,test_char,self.separator)
           }else if(test_char == "D" && !each.isNumber){
             onErrorForMasking!(["error":numericErrorText])
           }
@@ -272,6 +337,7 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
             
           }else{
             print("Looping seamlessly,", index)
+          
           }
         }
         

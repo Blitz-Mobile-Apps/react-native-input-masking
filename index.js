@@ -29,6 +29,12 @@ class RNInputMasking extends React.Component {
         );
     }
 
+    _onErrorForMasking = ({nativeEvent}) => {
+
+        console.log('error ',nativeEvent)
+        
+    }
+
     render() {
 
 
@@ -65,7 +71,7 @@ class RNInputMasking extends React.Component {
                  * 
                  *********************/
 
-                onErrorForMasking={this.props.onErrorForMasking}
+                onErrorForMasking={this.props.onErrorForMasking ?? this._onErrorForMasking}
 
                 /*********************
                  * 
@@ -268,7 +274,7 @@ class RNInputMasking extends React.Component {
 
 
                 {...(Platform.OS == "ios" ?
-                    { fontType: this.props.fontFamily.split(".")[0] }
+                    { fontType: this.props.fontFamily?.split(".")[0] }
                     : { fontFamily: this.props.fontFamily })
                 }
                 
@@ -325,7 +331,9 @@ RNInputMasking.propTypes = {
 
     maskFormat: PropTypes.string.isRequired,
 
-    style: PropTypes.object
+    style: PropTypes.object,
+
+    fontFamily: PropTypes.string,
 }
 
 export default RNInputMasking;
