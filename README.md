@@ -93,7 +93,7 @@ export default ExampleApp;
 | style      | The style property to set the height, width and so on.       | -  | both |
 | onChangeText   | This callback function is helpful if you want to get access to the values changing while typing the text.| A call back function  | both |
 | onFocus   | This callback function is helpful when you want to know when the input field is focus or blurred. | A call back function | both |
-| onErrorForMasking   | This callback function is helpful when you want to know why the typing is stopped. (The typing is stopped when the user types a character that doesn't match the given format.) | A call back function | both |
+| onErrorForMasking (Required)   | This callback function is helpful when you want to know why the typing is stopped. (The typing is stopped when the user types a character that doesn't match the given format.) | A call back function | both |
 | onSubmitEditing   | This callback function is helpful when you want to know when the user has pressed the return key.         | A call back function | both |
 | underlineColorAndroid   | Use this prop to set the underline color of the text input.  | Any hex color, default: #cccccc| android |
 | placeholder   | Use this prop to set the placeholder for the text input. | Any string | both |
@@ -105,8 +105,8 @@ export default ExampleApp;
 | textAlign   | Use this prop to set the alignment of the text inside the text input. |"Left" or "Right", default: "Left" | both |
 | keyboardType   | Use this prop to set the keyboard type for the text input. | "number-pad" , "date-time" , "email-address" , "password" , default: Os's default | both |
 | returnKeyType   | Use this prop to set the returnKeyType of the keyboard for the text input. | "go" , "next" , "search" , "done" , default: "done" | both |
-| maskType   | Use this prop to set the maskType for the text input. | "credit-card" , "phone-number" , "default" | android |
-| maskFormat   | Use this prop to set the maskFormat for the text input. | Use A where you want to show the alphabet and use D where you want to show a digit. Eg: DD-AA-DD | both |
+| maskType (Required)   | Use this prop to set the maskType for the text input. | "credit-card" , "phone-number" , "default" | android |
+| maskFormat (Required)   | Use this prop to set the maskFormat for the text input. | Use A where you want to show the alphabet and use D where you want to show a digit. Eg: DD-AA-DD | both |
 | fontFamily   | Use this prop to set the font-family for the text input. | Pass the name of the font which you have in your project. (for eg: Poppins-Bold.otf ) | both |
 | focus   | You can use this method by creating a ref of the text input. | - | both |
 | blur   | You can use this method by creating a ref of the text input. | - | both |
