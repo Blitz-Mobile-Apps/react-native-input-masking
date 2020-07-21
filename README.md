@@ -23,7 +23,7 @@ $ pod install
 ```
 
 ## Usage:
-Following is the basic example of using **react-native-input-masking** in your app.
+Following is the basic example of using **react-native-input-masking** in your app. See the **example** folder for more implementation.
 ```sh
 import RNInputMasking from 'react-native-input-masking'
 import {Text, TouchableOpacity} from 'react-native'
@@ -39,18 +39,6 @@ class ExampleApp extends React.Component {
     this.setState({ value: nativeEvent.text })
   }
   
-   blur = () => {
-    if(this.inputMaskRef){
-      this.inputMaskRef.blur()
-    }
-  }
-
-  focus = () => {
-    if(this.inputMaskRef){
-      this.inputMaskRef.focus()
-    }
-  }
-
   
 
   render() {
@@ -63,23 +51,11 @@ class ExampleApp extends React.Component {
             alignSelf: 'center',
             marginTop: 5
           }}
-          ref={_ref => this.inputMaskRef = _ref}
           value={this.state.value}
           onChangeText={this.onChangeText}
           maskFormat="DD-DD-DD"
         /> 
         
-        <TouchableOpacity onPress={this.blur}>
-          <Text>
-            blur
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={this.focus}>
-          <Text>
-            focus
-          </Text>
-        </TouchableOpacity>
     );
   };
 }
