@@ -15,6 +15,7 @@ import {
   Platform
 } from 'react-native';
 import RNInputMasking from 'react-native-input-masking'
+import {fonts} from './src/assets/fonts'
 
 
 class App extends React.Component {
@@ -47,6 +48,16 @@ class App extends React.Component {
     
   }
 
+  _onSubmit = () => {
+
+    alert("Submitted")
+  }
+
+  _onFocusOrBlurred = ({nativeEvent}) => {
+
+    console.log('is focused ', nativeEvent)
+    
+  }
 
 
   render() {
@@ -71,6 +82,9 @@ class App extends React.Component {
           textColor="#000000"
           placeholder="4242-4242-4242-4242"
           onErrorForMasking={this._onError}
+          onSubmitEditing={this._onSubmit}
+          onFocus={this._onFocusOrBlurred}
+          fontFamily={fonts.PR+".otf"}
         />
 
         <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
