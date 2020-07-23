@@ -535,6 +535,10 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
         case "fontType":
           self.textField.font = setFontType()
           print("One prop at a time", prop)
+        case "placeholderTextColor":
+          let color = UIColor().HexToColor(hexString: placeholderTextColor, alpha: 1.0)
+          self.attributedPlaceholder = NSAttributedString(string: "placeholderTextColor",
+                                                              attributes: [NSAttributedString.Key.foregroundColor: color])
 
         default:
         print("One prop at a time..")
