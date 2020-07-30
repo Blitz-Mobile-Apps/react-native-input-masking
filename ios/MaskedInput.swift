@@ -245,9 +245,18 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
    
    
   @objc func focus() {
-     self.textField.becomeFirstResponder()
+//     self.textField.becomeFirstResponder()
+    
+    self.becomeFirstResponder()
      print("Became first responder by js ref focus")
    }
+    
+    
+    @objc func blur() {
+        self.resignFirstResponder()
+        print("resign first responder by js ref blur")
+      }
+    
    
    @objc func update(value: NSNumber) {
       print("Getting ref value count from js: ", value)
@@ -366,17 +375,18 @@ class MaskedInput : UITextField,  UITextFieldDelegate  {
   
   @objc private dynamic func didRecognizeTapGesture(_ gesture: UITapGestureRecognizer) {
       let point = gesture.location(in: gesture.view)
-    
-    
+
+
 
       guard gesture.state == .ended, self.frame.contains(point) else { return }
 
     print("Tap gesture detected on self")
-    
+
     self.becomeFirstResponder()
-    
+
     self.addTarget(self, action:  #selector(toggleEditing), for: .allEditingEvents)
-      //doSomething()
+    
+    //doSomething()
   }
   
   
@@ -580,6 +590,13 @@ class InputMasking: RCTViewManager {
       }
     }
     
+    @objc  func blur(_ node:NSNumber) {
+         DispatchQueue.main.async {
+           let nativeComponent = self.bridge.uiManager.view(forReactTag: node) as! MaskedInput
+           nativeComponent.blur()
+         }
+       }
+    
    
     
     @objc func updateFromManager(_ node: NSNumber, count: NSNumber) {
@@ -592,3 +609,5 @@ class InputMasking: RCTViewManager {
        }
      }
 }
+
+
